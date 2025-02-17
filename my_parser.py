@@ -7,13 +7,13 @@ parser = argparse.ArgumentParser()
 
 
 # TODO 常改动参数
-parser.add_argument('--train_folder', default='/home/users/liuyu/experiment/ACL18_D/fill0/train/', type=str)
-parser.add_argument('--val_folder', default='/home/users/liuyu/experiment/ACL18_D/fill0/val/', type=str)
+parser.add_argument('--train_folder', default='/home/users/liuyu/Framework/dataset/train/price', type=str)#/home/users/liuyu/experiment/ACL18_D/fill0/train/  /home/users/liuyu/Framework/dataset/train/price
+parser.add_argument('--val_folder', default='/home/users/liuyu/Framework/dataset/val/price', type=str)
 parser.add_argument('--test_folder', default='/home/users/liuyu/experiment/ACL18_D/fill0/test/', type=str)
 parser.add_argument('--epochs', default=100, type=int) # 训练轮数
 parser.add_argument('--model', default="lstm", type=str) # 模型名称 lstm mlp
 parser.add_argument('--layers', default=2, type=int) # 层数
-parser.add_argument('--input_size', default=6, type=int) #输入特征的维度
+parser.add_argument('--input_size', default=5, type=int) #输入特征的维度
 parser.add_argument('--hidden_size', default=32, type=int) #隐藏层的维度
 parser.add_argument('--lr', default=0.0001, type=float) #learning rate 学习率
 parser.add_argument('--weight_decay', default=1e-4, type=float)

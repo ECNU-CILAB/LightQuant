@@ -40,7 +40,7 @@ class StockDataset(torch.utils.data.Dataset):
             self,
             csv_files=[],
             look_back=1,
-            features_columns=['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume'],
+            features_columns=['Open', 'High', 'Low', 'Close', 'Adj Close'],
             label_columns=['Label'],
     ):
         self.features, self.labels = [], []

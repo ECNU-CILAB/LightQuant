@@ -29,7 +29,7 @@ def train():
         model = lstm(input_size=args.input_size, hidden_size=args.hidden_size, num_layers=args.layers , output_size=2, dropout=args.dropout, batch_first=args.batch_first )
 
     if args.model == "mlp":
-        model = SimpleMLPModel()
+        model = SimpleMLPModel(input_size=args.input_size)
 
     model.to(device)
     criterion = nn.CrossEntropyLoss().to(device)  # 定义损失函数

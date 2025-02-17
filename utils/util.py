@@ -38,19 +38,46 @@ import pandas as pd
 #         filtered_df.to_csv(new_csv, index=False)
 
 #制作label
+# for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/train/price/"):
+#     source_path = os.path.join("/home/users/liuyu/Framework/dataset/train/price/", ticker_csv)
+#     data = pd.read_csv(source_path)
+#     data['Label'] = (data['Close'].shift(-1) - data['Close'] > 0).astype(int)
+#     data.to_csv(source_path, index=False)
+#
+#
+# for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/val/price/"):
+#     source_path = os.path.join("/home/users/liuyu/Framework/dataset/val/price/", ticker_csv)
+#     data = pd.read_csv(source_path)
+#     data['Label'] = (data['Close'].shift(-1) - data['Close'] > 0).astype(int)
+#     data.to_csv(source_path, index=False)
+
+#计算数据集中的None值和空值数量
 count = 0
+null_columns = {}
+
 for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/train/price/"):
     source_path = os.path.join("/home/users/liuyu/Framework/dataset/train/price/", ticker_csv)
     data = pd.read_csv(source_path)
-    data['Label'] = (data['Close'].shift(-1) - data['Close'] > 0).astype(int)
-    data.to_csv(source_path, index=False)
 
+    # 计算空值数量
+    null_count = data.isnull().sum().sum()
+    na_count = data.isna().sum().sum()
+    count += null_count + na_count
 
-for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/val/price/"):
-    source_path = os.path.join("/home/users/liuyu/Framework/dataset/val/price/", ticker_csv)
-    data = pd.read_csv(source_path)
-    data['Label'] = (data['Close'].shift(-1) - data['Close'] > 0).astype(int)
-    data.to_csv(source_path, index=False)
+    # 记录空值所在的列
+    if null_count > 0 or na_count > 0:
+        # 只保留空值数量大于零的列
+        null_columns[ticker_csv] = {
+            'null_counts': {col: count for col, count in data.isnull().sum().to_dict().items() if count > 0},
+            'na_counts': {col: count for col, count in data.isna().sum().to_dict().items() if count > 0}
+        }
+
+        print(f"Total null and na values in {ticker_csv}: {null_count + na_count}")
+        print(f"Null values in columns: {null_columns[ticker_csv]['null_counts']}")
+        print(f"Na values in columns: {null_columns[ticker_csv]['na_counts']}")
+
+print(f"Total null and na values across all files: {count}")
+print(f"Null and na values in each file: {null_columns}")
 
 
 
