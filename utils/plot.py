@@ -16,7 +16,7 @@ def plot_figure(avg_train_loss_list=[], avg_val_loss_list=[], avg_acc_list=[], a
 
     # 绘制验证损失曲线
     plt.subplot(1, 3, 3)
-    plt.plot(range(1, epochs // 10 + 1), avg_val_loss_list, label='Average Validation Loss', color='blue')
+    plt.plot(range(10, epochs + 1, 10), avg_val_loss_list, label='Average Validation Loss', color='blue')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.title('Average Validation Loss')
@@ -24,7 +24,7 @@ def plot_figure(avg_train_loss_list=[], avg_val_loss_list=[], avg_acc_list=[], a
 
     # 绘制准确率曲线
     plt.subplot(1, 3, 2)
-    plt.plot(range(1, epochs // 10 + 1), avg_acc_list, label='Average Accuracy', color='orange')
+    plt.plot(range(10, epochs + 1, 10), avg_acc_list, label='Average Validation Accuracy', color='orange')
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.title('Average Accuracy')
@@ -32,7 +32,7 @@ def plot_figure(avg_train_loss_list=[], avg_val_loss_list=[], avg_acc_list=[], a
 
     # 绘制MCC曲线
     plt.subplot(1, 3, 3)
-    plt.plot(range(1, epochs // 10 + 1), avg_mcc_list, label='Average MCC', color='green')
+    plt.plot(range(10, epochs + 1, 10), avg_mcc_list, label='Average Validation MCC', color='green')
     plt.xlabel('Epochs')
     plt.ylabel('MCC')
     plt.title('Average MCC')
