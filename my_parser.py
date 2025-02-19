@@ -7,9 +7,9 @@ parser = argparse.ArgumentParser()
 
 
 # TODO 常改动参数
-parser.add_argument('--train_folder', default='/home/users/liuyu/Framework/dataset/train/price', type=str)#/home/users/liuyu/experiment/ACL18_D/fill0/train/  /home/users/liuyu/Framework/dataset/train/price
-parser.add_argument('--val_folder', default='/home/users/liuyu/Framework/dataset/val/price', type=str)
-parser.add_argument('--test_folder', default='/home/users/liuyu/experiment/ACL18_D/fill0/test/', type=str)
+parser.add_argument('--train_folder', default='/home/users/liuyu/Framework/dataset/csi300/train/price', type=str)#/home/users/liuyu/experiment/ACL18_D/fill0/train/  /home/users/liuyu/Framework/dataset/train/price
+parser.add_argument('--val_folder', default='/home/users/liuyu/Framework/dataset/csi300/val/price', type=str)
+parser.add_argument('--test_folder', default='/home/users/liuyu/Framework/dataset/csi300/test/price', type=str)#/home/users/liuyu/experiment/ACL18_D/fill0/test/
 parser.add_argument('--epochs', default=100, type=int) # 训练轮数
 parser.add_argument('--model', default="lstm", type=str) # 模型名称 lstm mlp
 parser.add_argument('--layers', default=2, type=int) # 层数
