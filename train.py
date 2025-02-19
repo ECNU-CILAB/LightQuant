@@ -34,8 +34,12 @@ def train():
     model.to(device)
     criterion = nn.CrossEntropyLoss().to(device)  # 定义损失函数
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)  # Adam梯度下降
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs, eta_min=1e-6)  # 余弦退火学习率
 
-    best_val_acc = 0.0  # 记录最佳 ACC
+    # 早停
+    early_stop_patience = 10
+    early_stop_counter = 0
+    best_val_acc = float('inf')
 
     avg_train_loss_list = []
     avg_val_loss_list = []
@@ -59,6 +63,7 @@ def train():
             loss = criterion(prediction, label)
             optimizer.zero_grad()
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=5)  # 梯度裁剪
             optimizer.step()
 
             total_loss += loss.item()
@@ -67,6 +72,8 @@ def train():
         avg_loss = total_loss / len(train_dataloader)
         avg_train_loss_list.append(avg_loss)
         print(f"Epoch {epoch + 1}/{args.epochs}, Loss: {avg_loss}")
+
+        scheduler.step()  # 更新学习率
 
 
         # 10个 epoch 后验证模型
@@ -85,6 +92,12 @@ def train():
             if val_acc > best_val_acc:
                 best_val_acc = val_acc
                 torch.save( model.state_dict(), f"{args.model_save_folder}{args.model}.pth")
+            else:
+                early_stop_counter += 1
+
+            if early_stop_counter >= early_stop_patience:
+                print(f"Early stopping at epoch {epoch + 1}")
+                break
     print(f'训练完成')
     plot_figure(avg_train_loss_list, avg_val_loss_list, avg_acc_list, avg_mcc_list, args.epochs)
     print("绘图完成")
