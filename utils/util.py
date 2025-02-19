@@ -56,7 +56,7 @@ def split_data():
 #制作label
 def create_label():
     for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi300/train/price/"):
-        source_path = os.path.join("/home/users/liuyu/Framework/dataset/train/price/", ticker_csv)
+        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi300/train/price/", ticker_csv)
         data = pd.read_csv(source_path)
         data['Label'] = (data['Close'].shift(-1) - data['Close'] > 0).astype(int)
         data.to_csv(source_path, index=False)
