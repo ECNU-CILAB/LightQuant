@@ -11,9 +11,12 @@ from tqdm import tqdm
 import sklearn
 from utils.plot import *
 from model.mlp import SimpleMLPModel
+import random
+import numpy as np
 
 
 def train():
+
     if args.useGPU:
         device = torch.device(f"cuda:{args.GPU_ID}" )
     else:
@@ -40,11 +43,13 @@ def train():
     early_stop_patience = 10
     early_stop_counter = 0
     best_val_acc = float('inf')
+    best_val_loss = float('inf')
 
     avg_train_loss_list = []
     avg_val_loss_list = []
     avg_acc_list = []
     avg_mcc_list = []
+    plot_epoch = 0
 
     for epoch in tqdm(range(args.epochs)):
         total_loss = 0
@@ -88,18 +93,21 @@ def train():
             avg_mcc_list.append(val_mcc)
             print(f"Epoch {epoch + 1}/{args.epochs}, Val Loss: {val_loss}, Val Acc: {val_acc}, Val Mcc: {val_mcc}")
 
-            # 保存最佳 MCC 模型
-            if val_acc > best_val_acc:
-                best_val_acc = val_acc
-                torch.save( model.state_dict(), f"{args.model_save_folder}{args.model}.pth")
+            # 早停判断
+            if val_loss < best_val_loss:
+                best_val_loss = val_loss
+                early_stop_counter = 0  # 重置计数器
+                torch.save(model.state_dict(), f"{args.model_save_folder}{args.model}.pth")  # 保存最佳模型
             else:
                 early_stop_counter += 1
 
             if early_stop_counter >= early_stop_patience:
                 print(f"Early stopping at epoch {epoch + 1}")
+                plot_epoch = epoch + 1
                 break
+        plot_epoch = epoch + 1
     print(f'训练完成')
-    plot_figure(avg_train_loss_list, avg_val_loss_list, avg_acc_list, avg_mcc_list, args.epochs)
+    plot_figure(avg_train_loss_list, avg_val_loss_list, avg_acc_list, avg_mcc_list, plot_epoch)
     print("绘图完成")
 
 def validate(model, val_dataloader, device, criterion):

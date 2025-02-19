@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import torch
 
 class lstm(nn.Module):
-    def __init__(self, input_size=6, hidden_size=32, num_layers=1, output_size=1, dropout=0, batch_first=True):
+    def __init__(self, input_size=5, hidden_size=32, num_layers=1, output_size=1, dropout=0, batch_first=True):
         super(lstm, self).__init__()
         self.hidden_size = hidden_size
         self.input_size = input_size
