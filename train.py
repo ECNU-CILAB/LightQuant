@@ -4,6 +4,7 @@
 import torch.nn as nn
 import torch
 from model.LSTM import lstm
+from model.ALSTM import ALSTM
 from my_parser import args
 from utils.dataloader import *
 from sklearn.metrics import matthews_corrcoef
@@ -34,6 +35,9 @@ def train():
     if args.model == "mlp":
         model = SimpleMLPModel(input_size=args.input_size)
 
+    if args.model == "alstm":
+        model = ALSTM(input_size=args.input_size, hidden_size=args.hidden_size, num_layers=args.layers , output_size=2, dropout=args.dropout, batch_first=args.batch_first )
+
     model.to(device)
     criterion = nn.CrossEntropyLoss().to(device)  # 定义损失函数
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)  # Adam梯度下降
@@ -42,7 +46,6 @@ def train():
     # 早停
     early_stop_patience = 10
     early_stop_counter = 0
-    best_val_acc = float('inf')
     best_val_loss = float('inf')
 
     avg_train_loss_list = []

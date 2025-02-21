@@ -3,6 +3,7 @@
 import torch.nn as nn
 import torch
 from model.LSTM import lstm
+from model.ALSTM import ALSTM
 from my_parser import args
 from utils.dataloader import *
 from sklearn.metrics import matthews_corrcoef
@@ -21,6 +22,9 @@ def test():
 
     if args.model == "mlp":
         model = SimpleMLPModel()
+
+    if args.model == "alstm":
+        model = ALSTM(input_size=args.input_size, hidden_size=args.hidden_size, num_layers=args.layers , output_size=2, dropout=args.dropout, batch_first=args.batch_first )
 
     model.load_state_dict(torch.load(f"{args.model_save_folder}{args.model}.pth", weights_only=True))
     model.to(device)
