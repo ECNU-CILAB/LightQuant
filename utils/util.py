@@ -12,9 +12,9 @@ def split_data():
     val_end_date = datetime.strptime("2024-08-07", "%Y-%m-%d")
 
     # 定义数据集路径
-    news_path = "/home/users/liuyu/Framework/dataset/csi300_original/news/"
-    price_path = "/home/users/liuyu/Framework/dataset/csi300_original/price/"
-    output_path = "/home/users/liuyu/Framework/dataset/csi300"
+    news_path = "/home/users/liuyu/Framework/dataset/csi50_origional/news/"
+    price_path = "/home/users/liuyu/Framework/dataset/csi50_origional/price/"
+    output_path = "/home/users/liuyu/Framework/dataset/csi50"
 
     # 创建输出文件夹
     for dataset in ['train', 'val', 'test']:
@@ -55,21 +55,21 @@ def split_data():
 
 #制作label
 def create_label():
-    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi300/train/price/"):
-        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi300/train/price/", ticker_csv)
+    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi50/train/price/"):
+        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi50/train/price/", ticker_csv)
         data = pd.read_csv(source_path)
         data['Label'] = (data['Close'].shift(-1) - data['Close'] > 0).astype(int)
         data.to_csv(source_path, index=False)
 
 
-    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi300/val/price/"):
-        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi300/val/price/", ticker_csv)
+    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi50/val/price/"):
+        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi50/val/price/", ticker_csv)
         data = pd.read_csv(source_path)
         data['Label'] = (data['Close'].shift(-1) - data['Close'] > 0).astype(int)
         data.to_csv(source_path, index=False)
 
-    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi300/test/price/"):
-        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi300/test/price/", ticker_csv)
+    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi50/test/price/"):
+        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi50/test/price/", ticker_csv)
         data = pd.read_csv(source_path)
         data['Label'] = (data['Close'].shift(-1) - data['Close'] > 0).astype(int)
         data.to_csv(source_path, index=False)
@@ -79,8 +79,8 @@ def count_null_and_na_values():
     count = 0
     null_columns = {}
 
-    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/train/price/"):
-        source_path = os.path.join("/home/users/liuyu/Framework/dataset/train/price/", ticker_csv)
+    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi50_origional/price/"):
+        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi50_origional/price/", ticker_csv)
         data = pd.read_csv(source_path)
 
         # 计算空值数量
@@ -103,7 +103,7 @@ def count_null_and_na_values():
     print(f"Total null and na values across all files: {count}")
     print(f"Null and na values in each file: {null_columns}")
 
-
+# count_null_and_na_values()
 split_data()
 create_label()
 

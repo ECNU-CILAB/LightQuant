@@ -4,13 +4,14 @@ import torch.nn as nn
 import torch
 from model.LSTM import lstm
 from model.ALSTM import ALSTM
+from model.Adv_LSTM import AdvLSTM
+from model.BiLSTM import BiLSTM
 from my_parser import args
 from utils.dataloader import *
 from sklearn.metrics import matthews_corrcoef
 from tqdm import tqdm
 import sklearn
 from utils.plot import *
-from model.mlp import SimpleMLPModel
 def test():
     if args.useGPU:
         device = torch.device(f"cuda:{args.GPU_ID}" )
@@ -20,13 +21,18 @@ def test():
     if args.model == "lstm":
         model = lstm(input_size=args.input_size, hidden_size=args.hidden_size, num_layers=args.layers , output_size=2, dropout=args.dropout, batch_first=args.batch_first )
 
-    if args.model == "mlp":
-        model = SimpleMLPModel()
-
     if args.model == "alstm":
-        model = ALSTM(input_size=args.input_size, hidden_size=args.hidden_size, num_layers=args.layers , output_size=2, dropout=args.dropout, batch_first=args.batch_first )
+        model = ALSTM(input_size=args.input_size, hidden_size=args.hidden_size, num_layers=args.layers , output_size=2, dropout=args.dropout, batch_first=args.batch_first, attention_size=args.attention_size )
+
+    if args.model == "adv_lstm":
+        model = AdvLSTM(input_size=args.input_size, hidden_size=args.hidden_size, output_size=2, attention_size=args.attention_size, perturbation_size=args.perturbation_size, epsilon=args.epsilon)
+
+    if args.model == "bi_lstm":
+        model = BiLSTM(input_size=args.input_size, hidden_size=args.hidden_size, num_layers=args.layers , output_size=2, dropout=args.dropout, batch_first=args.batch_first )
+
 
     model.load_state_dict(torch.load(f"{args.model_save_folder}{args.model}.pth", weights_only=True))
+
     model.to(device)
 
     _, _, test_dataset = create_dataset(train_folder=None, val_folder=None, test_folder=args.test_folder, look_back=args.look_back)
@@ -49,6 +55,7 @@ def test():
             label = label.squeeze()
             label = torch.where(label == -1, torch.tensor(0), label).to(torch.int).long()
             label = label.to(device)
+
             prediction = model(input_data)
             prediction = prediction.squeeze()
             prediction = prediction.to(device)

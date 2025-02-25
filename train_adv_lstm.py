@@ -1,11 +1,8 @@
 # author:Liu Yu
-# time:2025/2/11 18:31
-
+# time:2025/2/21 19:46
 import torch.nn as nn
 import torch
-from model.LSTM import lstm
-from model.ALSTM import ALSTM
-from model.BiLSTM import BiLSTM
+from model.Adv_LSTM import AdvLSTM
 from my_parser import args
 from utils.dataloader import *
 from sklearn.metrics import matthews_corrcoef
@@ -15,11 +12,9 @@ from utils.plot import *
 import random
 import numpy as np
 
-
-def train():
-
+def train_adv_lstm():
     if args.useGPU:
-        device = torch.device(f"cuda:{args.GPU_ID}" )
+        device = torch.device(f"cuda:{args.GPU_ID}")
     else:
         device = torch.device("cpu")
 
@@ -28,15 +23,10 @@ def train():
     train_dataloader = create_dataloader(train_dataset, batch_size=args.batch_size, shuffle=True, drop_last=False)
     val_dataloader = create_dataloader(val_dataset, batch_size=args.batch_size, shuffle=True, drop_last=False)
 
-
-    if args.model == "lstm":
-        model = lstm(input_size=args.input_size, hidden_size=args.hidden_size, num_layers=args.layers , output_size=2, dropout=args.dropout, batch_first=args.batch_first )
-
-    if args.model == "alstm":
-        model = ALSTM(input_size=args.input_size, hidden_size=args.hidden_size, num_layers=args.layers , output_size=2, dropout=args.dropout, batch_first=args.batch_first, attention_size=args.attention_size )
-
-    if args.model == "bi_lstm":
-        model = BiLSTM(input_size=args.input_size, hidden_size=args.hidden_size, num_layers=args.layers , output_size=2, dropout=args.dropout, batch_first=args.batch_first )
+    if args.model == "adv_lstm":
+        model = AdvLSTM(input_size=args.input_size, hidden_size=args.hidden_size, output_size=2, attention_size=args.attention_size, perturbation_size=args.perturbation_size, epsilon=args.epsilon)
+    else:
+        raise ValueError("Unsupported model type. Please use 'adv_lstm'.")
 
     model.to(device)
     criterion = nn.CrossEntropyLoss().to(device)  # 定义损失函数
@@ -58,17 +48,14 @@ def train():
         total_loss = 0
 
         for idx, (input_data, label) in enumerate(train_dataloader):
-
             input_data = input_data.to(device)
+            input_data.requires_grad_()
             label = label.squeeze()
             label = torch.where(label == -1, torch.tensor(0), label).to(torch.int).long()
             label = label.to(device)
-            prediction = model(input_data)
-            prediction = prediction.squeeze()
-            prediction = prediction.to(device)
 
+            loss = model(input_data, label)
 
-            loss = criterion(prediction, label)
             optimizer.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=5)  # 梯度裁剪
