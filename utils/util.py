@@ -4,6 +4,7 @@ import os
 import shutil
 from datetime import datetime
 import pandas as pd
+import numpy as np
 
 def split_data():
     #划分训练集,验证集,测试集
@@ -14,14 +15,31 @@ def split_data():
     # 定义数据集路径
     news_path = "/home/users/liuyu/Framework/dataset/csi50_origional/news/"
     price_path = "/home/users/liuyu/Framework/dataset/csi50_origional/price/"
+    news_embedding_path = "/home/users/liuyu/Framework/dataset/csi50_origional/news_embedding/"
     output_path = "/home/users/liuyu/Framework/dataset/csi50"
 
     # 创建输出文件夹
     for dataset in ['train', 'val', 'test']:
-        for data_type in ['news', 'price']:
+        for data_type in ['news', 'price', 'news_embedding']:
             os.makedirs(os.path.join(output_path, dataset, data_type), exist_ok=True)
 
     # 处理新闻数据
+    for ticker_name in os.listdir(news_path):
+        for date_csv in os.listdir(os.path.join(news_path, ticker_name)):
+            if date_csv.endswith(".csv"):
+                date_str = date_csv.split(".")[0]
+                date = datetime.strptime(date_str, "%Y-%m-%d")
+                source_path = os.path.join(news_path, ticker_name, date_csv)
+                if date <= train_end_date:
+                    destination_path = os.path.join(output_path, 'train', 'news', ticker_name, date_csv)
+                elif date <= val_end_date:
+                    destination_path = os.path.join(output_path, 'val', 'news', ticker_name, date_csv)
+                else:
+                    destination_path = os.path.join(output_path, 'test', 'news', ticker_name, date_csv)
+                os.makedirs(os.path.dirname(destination_path), exist_ok=True)
+                shutil.move(source_path, destination_path)
+
+    #处理新闻嵌入数据
     for ticker_name in os.listdir(news_path):
         for date_csv in os.listdir(os.path.join(news_path, ticker_name)):
             if date_csv.endswith(".csv"):
@@ -103,9 +121,34 @@ def count_null_and_na_values():
     print(f"Total null and na values across all files: {count}")
     print(f"Null and na values in each file: {null_columns}")
 
+def generate_trading_date_list():
+    price_path = "/home/users/liuyu/Framework/dataset/csi50_origional/price/中国石化.csv"
+    df = pd.read_csv(price_path)
+
+    ticker_csv_list = df['Date'].tolist()
+
+    df = pd.DataFrame(ticker_csv_list, columns=['Date'])
+    df.to_csv("/home/users/liuyu/Framework/dataset/trading_date_list.csv", index=False)
+    print(len(ticker_csv_list))
+
+
+def check_embedding():
+    path = "/home/users/liuyu/Framework/dataset/csi50_origional/news_embedding/中国建筑/2024-04-29.npy"
+    embedding = np.load(path)
+    print(embedding)
+    print(embedding.shape)
+
+
+#计算数据集中None值和空值数量
 # count_null_and_na_values()
-split_data()
-create_label()
+#划分训练集,验证集,测试集
+# split_data()
+#创建label
+# create_label()
+# 生成交易日期列表
+# generate_trading_date_list()
+#查看embedding
+check_embedding()
 
 
 

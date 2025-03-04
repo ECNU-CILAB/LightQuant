@@ -10,9 +10,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', default="csi300", type=str) #csi50 csi300
 # 解析命令行参数
 args = parser.parse_args()
-parser.add_argument('--train_folder', default=f'/home/users/liuyu/Framework/dataset/{args.dataset}/train/price', type=str)#/home/users/liuyu/experiment/ACL18_D/fill0/train/  /home/users/liuyu/Framework/dataset/train/price
+parser.add_argument('--train_folder', default=f'/home/users/liuyu/Framework/dataset/{args.dataset}/train/price', type=str)
 parser.add_argument('--val_folder', default=f'/home/users/liuyu/Framework/dataset/{args.dataset}/val/price', type=str)
-parser.add_argument('--test_folder', default=f'/home/users/liuyu/Framework/dataset/{args.dataset}/test/price', type=str)#/home/users/liuyu/experiment/ACL18_D/fill0/test/
+parser.add_argument('--test_folder', default=f'/home/users/liuyu/Framework/dataset/{args.dataset}/test/price', type=str)
+parser.add_argument('--train_news_folder', default=f'/home/users/liuyu/Framework/dataset/{args.dataset}/train/news_embedding', type=str)
+parser.add_argument('--val_news_folder', default=f'/home/users/liuyu/Framework/dataset/{args.dataset}/val/news_embedding', type=str)
+parser.add_argument('--test_news_folder', default=f'/home/users/liuyu/Framework/dataset/{args.dataset}/test/news_embedding', type=str)
 parser.add_argument('--epochs', default=5000, type=int) # 训练轮数
 parser.add_argument('--model', default="alstm", type=str) # 模型名称 lstm alstm adv_lstm bi_lstm
 parser.add_argument('--epsilon', default=0.1, type=float)
