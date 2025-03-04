@@ -1,16 +1,12 @@
 # author:Liu Yu
 # time:2025/2/13 15:19
 import torch.nn as nn
-import torch
 from model.LSTM import lstm
 from model.ALSTM import ALSTM
 from model.Adv_LSTM import AdvLSTM
 from model.BiLSTM import BiLSTM
-from my_parser import args
-from utils.dataloader import *
+from utils.price_dataloader import *
 from sklearn.metrics import matthews_corrcoef
-from tqdm import tqdm
-import sklearn
 from utils.plot import *
 def test():
     if args.useGPU:
@@ -35,7 +31,7 @@ def test():
 
     model.to(device)
 
-    _, _, test_dataset = create_dataset(train_folder=None, val_folder=None, test_folder=args.test_folder, look_back=args.look_back)
+    test_dataset = StockDataset(args.test_price_folder, args.test_label_folder)
 
     test_dataloader = create_dataloader(test_dataset, batch_size=args.batch_size, shuffle=True, drop_last=False)
 

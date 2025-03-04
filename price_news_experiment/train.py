@@ -1,19 +1,13 @@
 # author:Liu Yu
 # time:2025/2/11 18:31
-
 import torch.nn as nn
-import torch
 from model.LSTM import lstm
 from model.ALSTM import ALSTM
 from model.BiLSTM import BiLSTM
-from my_parser import args
-from utils.dataloader import *
+from utils.price_news_dataloader import *
 from sklearn.metrics import matthews_corrcoef
 from tqdm import tqdm
-import sklearn
 from utils.plot import *
-import random
-import numpy as np
 
 
 def train():
@@ -23,7 +17,8 @@ def train():
     else:
         device = torch.device("cpu")
 
-    train_dataset, val_dataset, _ = create_dataset(train_folder=args.train_folder, val_folder=args.val_folder, test_folder=None, look_back=args.look_back)
+    train_dataset = StockDataset(args.train_price_folder, args.train_news_folder)
+    val_dataset = StockDataset(args.val_price_folder, args.val_news_folder)
 
     train_dataloader = create_dataloader(train_dataset, batch_size=args.batch_size, shuffle=True, drop_last=False)
     val_dataloader = create_dataloader(val_dataset, batch_size=args.batch_size, shuffle=True, drop_last=False)

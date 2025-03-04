@@ -1,7 +1,7 @@
 # author:Liu Yu
 # time:2025/2/11 19:41
 import matplotlib.pyplot as plt
-from my_parser import args
+from price_experiment.my_parser import args
 def plot_figure(avg_train_loss_list=[], avg_val_loss_list=[], avg_acc_list=[], avg_mcc_list=[], epochs=100):
     # 创建一个图形对象
     plt.figure(figsize=(12, 4))
@@ -16,7 +16,7 @@ def plot_figure(avg_train_loss_list=[], avg_val_loss_list=[], avg_acc_list=[], a
 
     # 绘制验证损失曲线
     plt.subplot(2, 2, 2)
-    plt.plot(range(1, epochs + 1, 5), avg_val_loss_list, label='Average Validation Loss', color='blue')
+    plt.plot(range(5, epochs + 1, 5), avg_val_loss_list, label='Average Validation Loss', color='blue')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.title('Average Validation Loss')
@@ -24,7 +24,7 @@ def plot_figure(avg_train_loss_list=[], avg_val_loss_list=[], avg_acc_list=[], a
 
     # 绘制准确率曲线
     plt.subplot(2, 2, 3)
-    plt.plot(range(1, epochs + 1, 5), avg_acc_list, label='Average Validation Accuracy', color='orange')
+    plt.plot(range(5, epochs + 1, 5), avg_acc_list, label='Average Validation Accuracy', color='orange')
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.title('Average Accuracy')
@@ -32,7 +32,7 @@ def plot_figure(avg_train_loss_list=[], avg_val_loss_list=[], avg_acc_list=[], a
 
     # 绘制MCC曲线
     plt.subplot(2, 2, 4)
-    plt.plot(range(1, epochs + 1, 5), avg_mcc_list, label='Average Validation MCC', color='green')
+    plt.plot(range(5, epochs + 1, 5), avg_mcc_list, label='Average Validation MCC', color='green')
     plt.xlabel('Epochs')
     plt.ylabel('MCC')
     plt.title('Average MCC')

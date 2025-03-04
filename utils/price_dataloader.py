@@ -65,7 +65,7 @@ class StockDataset(torch.utils.data.Dataset):
 
 def create_dataset(train_folder=None, val_folder=None, test_folder=None, look_back=1):
     def load_dataset(folder, look_back):
-        """加载文件夹中的csv文件，返回对应的StockDataset对象"""
+
         if folder is not None:
             csv_files = [os.path.join(folder, file) for file in os.listdir(folder) if file.endswith(".csv")]
             return StockDataset(csv_files, look_back)
