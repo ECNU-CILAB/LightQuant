@@ -12,7 +12,7 @@ import re
 import numpy as np
 warnings.filterwarnings("ignore")
 
-local_model_path = "/home/users/liuyu/.cache/modelscope/hub/bert-base-cased/"
+local_model_path = "/home/users/liuyu/.cache/modelscope/hub/GTE-QWEN2-7B/"
 csv_news_path = "/home/users/liuyu/Framework/dataset/csi50_origional/news/"
 embedding_path = "/home/users/liuyu/Framework/dataset/csi50_origional/news_embedding/"
 
@@ -65,7 +65,6 @@ def get_news_embedding():
                 embedding_file_path = os.path.join(embedding_path, ticker, f"{date}.npy")
                 os.makedirs(os.path.dirname(embedding_file_path), exist_ok=True)
                 np.save(embedding_file_path, sentence_embedding.cpu().numpy())
-
 
 # 生成向量并保存
 get_news_embedding()
