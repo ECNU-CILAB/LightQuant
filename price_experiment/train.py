@@ -14,7 +14,7 @@ from model.ALSTM import ALSTM
 from model.BiLSTM import BiLSTM
 from my_parser import args
 from utils.price_dataloader import *
-from sklearn.metrics import matthews_corrcoef
+from sklearn.metrics import matthews_corrcoef, f1_score
 from tqdm import tqdm
 import sklearn
 from utils.plot import *
@@ -92,14 +92,14 @@ def train():
         # 5个 epoch 后验证模型
         if (epoch + 1) % 5 == 0:
             # 验证
-            val_loss, val_acc, val_mcc = validate(model, val_dataloader, device, criterion)
+            val_loss, val_acc, val_mcc, val_f1_score = validate(model, val_dataloader, device, criterion)
             # 恢复训练模式
             model.train()
 
             avg_val_loss_list.append(val_loss)
             avg_acc_list.append(val_acc)
             avg_mcc_list.append(val_mcc)
-            print(f"Epoch {epoch + 1}/{args.epochs}, Val Loss: {val_loss}, Val Acc: {val_acc}, Val Mcc: {val_mcc}")
+            print(f"Epoch {epoch + 1}/{args.epochs}, Val Loss: {val_loss}, Val Acc: {val_acc}, Val Mcc: {val_mcc}, Val F1_score: {val_f1_score}")
 
             # 早停判断
             if val_loss < best_val_loss:
@@ -115,7 +115,7 @@ def train():
                 break
         plot_epoch = epoch + 1
     print(f'训练完成')
-    plot_figure(avg_train_loss_list, avg_val_loss_list, avg_acc_list, avg_mcc_list, plot_epoch)
+    plot_figure(avg_train_loss_list, avg_val_loss_list, avg_acc_list, avg_mcc_list, plot_epoch, args.figure_save_folder, args.model)
     print("绘图完成")
 
 def validate(model, val_dataloader, device, criterion):
@@ -141,4 +141,5 @@ def validate(model, val_dataloader, device, criterion):
     val_loss = total_loss / len(val_dataloader)
     val_acc = correct / total_samples
     val_mcc = matthews_corrcoef(all_labels, all_predictions)
-    return val_loss, val_acc, val_mcc
+    val_f1_score = f1_score(all_labels, all_predictions)
+    return val_loss, val_acc, val_mcc, val_f1_score

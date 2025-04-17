@@ -1,8 +1,7 @@
 # author:Liu Yu
 # time:2025/2/11 19:41
 import matplotlib.pyplot as plt
-from price_experiment.my_parser import args
-def plot_figure(avg_train_loss_list=[], avg_val_loss_list=[], avg_acc_list=[], avg_mcc_list=[], epochs=100):
+def plot_figure(avg_train_loss_list=[], avg_val_loss_list=[], avg_acc_list=[], avg_mcc_list=[], epochs=100, figure_save_folder=None, model=None):
     # 创建一个图形对象
     plt.figure(figsize=(12, 4))
 
@@ -44,6 +43,6 @@ def plot_figure(avg_train_loss_list=[], avg_val_loss_list=[], avg_acc_list=[], a
     # 自动调整子图参数
     plt.tight_layout()
 
-    plt.savefig(args.figure_save_folder + args.model + '.png')
+    plt.savefig(figure_save_folder + f'{model}' + '.png')
 
 

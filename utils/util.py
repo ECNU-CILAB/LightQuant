@@ -13,10 +13,10 @@ def split_data():
     val_end_date = datetime.strptime("2024-08-07", "%Y-%m-%d")
 
     # 定义数据集路径
-    news_path = "/home/users/liuyu/Framework/dataset/csi50_origional/news/"
-    price_path = "/home/users/liuyu/Framework/dataset/csi50_origional/price/"
-    news_embedding_path = "/home/users/liuyu/Framework/dataset/csi50_origional/news_embedding/"
-    output_path = "/home/users/liuyu/Framework/dataset/csi50"
+    news_path = "/home/users/liuyu/Framework/dataset/csi300_origional/news/"
+    price_path = "/home/users/liuyu/Framework/dataset/csi300_origional/price/"
+    news_embedding_path = "/home/users/liuyu/Framework/dataset/csi300_origional/news_embedding/"
+    output_path = "/home/users/liuyu/Framework/dataset/csi300"
 
     # 创建输出文件夹
     for dataset in ['train', 'val', 'test']:
@@ -37,23 +37,23 @@ def split_data():
                 else:
                     destination_path = os.path.join(output_path, 'test', 'news', ticker_name, date_csv)
                 os.makedirs(os.path.dirname(destination_path), exist_ok=True)
-                shutil.move(source_path, destination_path)
+                shutil.copy(source_path, destination_path)
 
     #处理新闻嵌入数据
-    for ticker_name in os.listdir(news_path):
-        for date_csv in os.listdir(os.path.join(news_path, ticker_name)):
-            if date_csv.endswith(".csv"):
+    for ticker_name in os.listdir(news_embedding_path):
+        for date_csv in os.listdir(os.path.join(news_embedding_path, ticker_name)):
+            if date_csv.endswith(".npy"):
                 date_str = date_csv.split(".")[0]
                 date = datetime.strptime(date_str, "%Y-%m-%d")
-                source_path = os.path.join(news_path, ticker_name, date_csv)
+                source_path = os.path.join(news_embedding_path, ticker_name, date_csv)
                 if date <= train_end_date:
-                    destination_path = os.path.join(output_path, 'train', 'news', ticker_name, date_csv)
+                    destination_path = os.path.join(output_path, 'train', 'news_embedding', ticker_name, date_csv)
                 elif date <= val_end_date:
-                    destination_path = os.path.join(output_path, 'val', 'news', ticker_name, date_csv)
+                    destination_path = os.path.join(output_path, 'val', 'news_embedding', ticker_name, date_csv)
                 else:
-                    destination_path = os.path.join(output_path, 'test', 'news', ticker_name, date_csv)
+                    destination_path = os.path.join(output_path, 'test', 'news_embedding', ticker_name, date_csv)
                 os.makedirs(os.path.dirname(destination_path), exist_ok=True)
-                shutil.move(source_path, destination_path)
+                shutil.copy(source_path, destination_path)
 
     # 处理价格数据
     for ticker_csv in os.listdir(price_path):
@@ -73,21 +73,21 @@ def split_data():
 
 #制作label
 def create_label():
-    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi50/train/price/"):
-        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi50/train/price/", ticker_csv)
+    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi300/train/price/"):
+        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi300/train/price/", ticker_csv)
         data = pd.read_csv(source_path)
         data['Label'] = (data['Close'].shift(-1) - data['Close'] > 0).astype(int)
         data.to_csv(source_path, index=False)
 
 
-    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi50/val/price/"):
-        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi50/val/price/", ticker_csv)
+    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi300/val/price/"):
+        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi300/val/price/", ticker_csv)
         data = pd.read_csv(source_path)
         data['Label'] = (data['Close'].shift(-1) - data['Close'] > 0).astype(int)
         data.to_csv(source_path, index=False)
 
-    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi50/test/price/"):
-        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi50/test/price/", ticker_csv)
+    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi300/test/price/"):
+        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi300/test/price/", ticker_csv)
         data = pd.read_csv(source_path)
         data['Label'] = (data['Close'].shift(-1) - data['Close'] > 0).astype(int)
         data.to_csv(source_path, index=False)
@@ -97,8 +97,8 @@ def count_null_and_na_values():
     count = 0
     null_columns = {}
 
-    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi50_origional/price/"):
-        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi50_origional/price/", ticker_csv)
+    for ticker_csv in os.listdir("/home/users/liuyu/Framework/dataset/csi300_origional/price/"):
+        source_path = os.path.join("/home/users/liuyu/Framework/dataset/csi300_origional/price/", ticker_csv)
         data = pd.read_csv(source_path)
 
         # 计算空值数量
@@ -122,7 +122,7 @@ def count_null_and_na_values():
     print(f"Null and na values in each file: {null_columns}")
 
 def generate_trading_date_list():
-    price_path = "/home/users/liuyu/Framework/dataset/csi50_origional/price/中国石化.csv"
+    price_path = "/home/users/liuyu/Framework/dataset/csi300_origional/price/中国石化.csv"
     df = pd.read_csv(price_path)
 
     ticker_csv_list = df['Date'].tolist()
@@ -133,7 +133,7 @@ def generate_trading_date_list():
 
 
 def check_embedding():
-    path = "/home/users/liuyu/Framework/dataset/csi50_origional/news_embedding/中国建筑/2024-04-29.npy"
+    path = "/home/users/liuyu/Framework/dataset/csi300/train/news_embedding/爱尔眼科/2021-01-04.npy"
     embedding = np.load(path)
     print(embedding)
     print(embedding.shape)
@@ -141,12 +141,12 @@ def check_embedding():
 
 #计算数据集中None值和空值数量
 # count_null_and_na_values()
-#划分训练集,验证集,测试集
-# split_data()
-#创建label
-# create_label()
 # 生成交易日期列表
 # generate_trading_date_list()
+#划分训练集,验证集,测试集
+split_data()
+#创建label
+create_label()
 #查看embedding
 check_embedding()
 

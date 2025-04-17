@@ -37,6 +37,20 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="liuyu@49.52.27.39:22 password (6)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="liuyu@49.52.27.39:22 password (7)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="liuyu@49.52.27.40:22 password">
         <serverdata>
           <mappings>

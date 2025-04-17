@@ -8,6 +8,7 @@ from model.BiLSTM import BiLSTM
 from utils.price_dataloader import *
 from sklearn.metrics import matthews_corrcoef
 from utils.plot import *
+from my_parser import args
 def test():
     if args.useGPU:
         device = torch.device(f"cuda:{args.GPU_ID}" )
@@ -45,8 +46,9 @@ def test():
     y_pred = []
 
     with torch.no_grad():  # 在测试时，不需要计算梯度
-        for idx, (input_data, label) in enumerate(test_dataloader):
-
+        for idx, batch in enumerate(test_dataloader):
+            market, news, label = batch["market"].to(device), batch["news"].to(device), batch["label"].to(device)
+            input_data = torch.cat((market, news), dim=2)
             input_data = input_data.to(device)
             label = label.squeeze()
             label = torch.where(label == -1, torch.tensor(0), label).to(torch.int).long()
