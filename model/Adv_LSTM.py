@@ -19,7 +19,10 @@ class AttentiveLSTM(nn.Module):
         self.attention_weight = nn.Parameter(torch.randn(attention_size))
 
         # Prediction layer
-        self.predict_fc = nn.Linear(hidden_size * 2, output_size)  # Concatenate attention output and LSTM output
+        self.predict_fc = nn.Sequential(
+            nn.Linear(hidden_size * 2, output_size),
+            nn.Sigmoid()
+        )
 
         # Hyperparameters for adversarial training
         self.perturbation_size = perturbation_size
@@ -67,45 +70,44 @@ class AdvLSTM(nn.Module):
 
     def generate_adversarial_example(self, x, clean_output, labels):
         if not x.requires_grad:
-            x.requires_grad_()  # 确保 x 启用梯度计算
+            x.requires_grad_()  # Ensure that the input tensor x has gradient computation enabled.
 
         # 计算对抗损失
         loss = self.criterion(clean_output, labels)
-        loss.backward(retain_graph=True)  # 计算梯度
+        loss.backward(retain_graph=True)  # compute gradients
 
         # 获取梯度方向上的扰动
         grad = x.grad.data
-        adversarial_perturbation = self.epsilon * grad / grad.norm()  # 归一化扰动
+        adversarial_perturbation = self.epsilon * grad / grad.norm()  # Normalize the perturbation.
 
-        # 额外添加一个随机噪声扰动
+        # Add an additional random noise perturbation.
         random_perturbation = (torch.rand_like(
             x) - 0.5) * 2 * self.perturbation_size  # [-perturbation_size, perturbation_size]
 
-        # 生成对抗样本
+
         adversarial_example = x + adversarial_perturbation + random_perturbation
-        adversarial_example = torch.clamp(adversarial_example, min=0, max=1)  # 限制范围
+        adversarial_example = torch.clamp(adversarial_example, min=0, max=1)
 
         return adversarial_example
 
     def forward(self, x, labels=None):
-        # 获取清洁样本的预测
+        # Get the prediction for the clean (original) input sample.
         clean_output = self.attentive_lstm(x)
         clean_output = clean_output.squeeze()
 
-        # 如果是训练模式且 labels 不为空，则生成对抗样本
+
         if self.training and labels is not None:
             x.requires_grad_()  # Ensure gradients are computed for the input
             adv_example = self.generate_adversarial_example(x, clean_output, labels)
             adv_output = self.attentive_lstm(adv_example)
 
-            # 计算清洁样本损失和对抗样本损失
+
             clean_loss, adv_loss = self.adversarial_loss(clean_output, adv_output, labels)
 
-            # 合并损失
+
             total_loss = clean_loss + 0.1*adv_loss
             return total_loss
 
-        # 只返回 clean_output（验证模式）
         return clean_output
 
 

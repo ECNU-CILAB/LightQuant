@@ -8,21 +8,22 @@ class ALSTM(nn.Module):
 
         self.hidden_size = hidden_size
 
-        # 编码器
+
         self.encoder_rnn = nn.LSTM(input_size, hidden_size, num_layers, batch_first=batch_first, dropout=dropout)
-        self.encoder_bn = nn.BatchNorm1d(hidden_size)  # 批量归一化层
+        self.encoder_bn = nn.BatchNorm1d(hidden_size)
 
-        # 解码器
+
         self.decoder_rnn = nn.LSTM(hidden_size, hidden_size, num_layers, batch_first=batch_first, dropout=dropout)
-        self.decoder_bn = nn.BatchNorm1d(hidden_size)  # 批量归一化层
+        self.decoder_bn = nn.BatchNorm1d(hidden_size)
 
-        # 改进 Attention 计算层，使用 attention_dim 作为中间维度
+
         self.attention = nn.Linear(hidden_size * 2, attention_size)
-        self.attention_score = nn.Linear(attention_size, 1)  # 计算注意力分数
+        self.attention_score = nn.Linear(attention_size, 1)
         self.dropout = nn.Dropout(dropout)
         self.fc_out = nn.Linear(hidden_size, output_size)
+        self.sigmoid = nn.Sigmoid()
 
-        # 初始化权重
+
         self.init_weights()
 
     def init_weights(self):
@@ -40,7 +41,7 @@ class ALSTM(nn.Module):
         energy = torch.tanh(self.attention(torch.cat((decoder_hidden, encoder_outputs), dim=2)))  # (batch_size, seq_len, attention_dim)
         attn_weights = F.softmax(self.attention_score(energy).squeeze(2), dim=1)  # (batch_size, seq_len)
 
-        # 计算上下文向量
+
         context = torch.bmm(attn_weights.unsqueeze(1), encoder_outputs).squeeze(1)  # (batch_size, hidden_dim)
 
         return context, attn_weights
@@ -58,6 +59,8 @@ class ALSTM(nn.Module):
         decoder_output = self.decoder_bn(decoder_output.transpose(1, 2)).transpose(1, 2)  # 批量归一化
 
         decoder_output = self.dropout(decoder_output)
-        predictions = self.fc_out(decoder_output.squeeze(1))  # 输出预测
+        predictions = self.fc_out(decoder_output.squeeze(1))
+
+        predictions = self.sigmoid(predictions)
 
         return predictions

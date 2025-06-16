@@ -1,5 +1,3 @@
-# author:Liu Yu
-# time:2025/2/21 19:26
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -8,24 +6,24 @@ class ALSTM(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, dropout, batch_first):
         super(ALSTM, self).__init__()
         self.hidden_size = hidden_size
-        # 编码器
+
         self.encoder_rnn = nn.LSTM(input_size, hidden_size, num_layers, batch_first=batch_first, dropout=dropout)
 
-        # 解码器
+
         self.decoder_rnn = nn.LSTM(hidden_size, hidden_size, num_layers, batch_first=batch_first, dropout=dropout)
 
-        # Attention机制
+
         self.attention = nn.Linear(hidden_size * 2, hidden_size)
         self.dropout = nn.Dropout(dropout)
 
     def attention_layer(self, decoder_hidden, encoder_outputs):
         decoder_hidden = decoder_hidden.unsqueeze(1).repeat(1, encoder_outputs.size(1), 1)  # (batch_size, seq_len, hidden_dim)
 
-        # 计算注意力分数
+
         energy = torch.tanh(self.attention(torch.cat((decoder_hidden, encoder_outputs), dim=2)))  # (batch_size, seq_len, hidden_dim)
         attn_weights = F.softmax(energy.sum(dim=2), dim=1)  # (batch_size, seq_len)
 
-        # 加权求和编码器输出，得到上下文向量
+
         context = torch.bmm(attn_weights.unsqueeze(1), encoder_outputs).squeeze(1)  # (batch_size, hidden_dim)
 
         return context, attn_weights
