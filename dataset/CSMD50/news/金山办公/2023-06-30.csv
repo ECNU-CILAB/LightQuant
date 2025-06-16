@@ -1,0 +1,4 @@
+﻿code_name,ticker,created_at,text
+金山办公,sh.688111,2023-06-30,金山办公与NVIDIA团队合作，通过NVIDIA Tensor Core GPU、TensorRT提升图像文档识别与理解的推理效率，这可能会影响金山办公的股价。
+金山办公,sh.688111,2023-06-30,金山办公借助NVIDIA Triton推理服务器的部署，成功优化GPU利用率，提供高推理吞吐量，相比于CPU其pipleline耗时共下降84%，这可能会影响金山办公的股价。
+金山办公,sh.688111,2023-06-30,采用NVIDIA Triton推理服务器部署，其部署成本节省了23%，这可能会影响金山办公的股价。
