@@ -35,17 +35,17 @@ LightQuant is a lightweight quantitative framework for stock market prediction. 
 Our dataset collected data from trusted, authoritative sources, primarily including official Chinese financial media such as Securities Times, ensuring high authenticity and relevance. The dataset features rich multimodal information—combining stock prices and financial news texts—to support comprehensive research and modeling. We implement rigorous preprocessing steps, including data cleaning, denoising, and feature extraction, to enhance data quality and usability. Additionally, we leverage large language models (LLMs) like GPT-4 to extract impactful financial factors from news texts, significantly improving interpretability and aiding downstream tasks. This integrated approach ensures our dataset not only captures real-market dynamics but also supports robust, explainable financial analysis.
 
 Here we show the process of how LLM extracts financial factors from news texts:
-![LLM.jpg](./pciture/LLM.png)
+![LLM.jpg](./pcitures/LLM.png)
 
 ## 💡 Quick Start
-![framework.jpg](./pciture/framework.png)
+![framework.jpg](./pcitures/framework.png)
 To get started with CSMD, follow these steps:
 1. **Installation**: Install the necessary dependencies by running the following command:
 ```python
 pip install -r requirements.txt
 ```
 2. **Download**: Download our dataset
-You can download the dataset from [here](https://www.modelscope.cn/datasets).
+You can download the dataset from [here](./dataset).
 
 Of cource, you can build your own dataset with our method. We open source our data collecting and processing flow and code, you can refer to ./data_construction to build your own dataset.
 ```python
