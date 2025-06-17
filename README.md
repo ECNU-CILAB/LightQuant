@@ -110,16 +110,18 @@ Below, we list the performance of the models we evaluated in the initial version
 - [x] Refine the details of our framework;
 
 ## Disclaimer
-⚠️ We assume no legal liability for the use of the open-source model and datasets. Users are responsible for independently assessing and assuming any potential risks associated with using the framework or data, and should always exercise caution.
-We recommend that users independently verify and analyze the model's outputs, and make informed decisions based on their specific needs and real-world scenarios.
-By providing open-source data and models, we aim to offer valuable tools for academic research and industry applications, promoting advancements in artificial intelligence technology within data analysis, financial innovation, and other related fields.
-⚠️ The use of our open-source model and dataset for commercial purposes is prohibited. The copyright of the original news content belongs to Securities Times. We only release processed and derived data, such as timestamps, sentiment scores, and embeddings, without including any raw or verbatim news text.
-We encourage users to fully leverage their creativity, deeply explore the potential of our work, expand its application scenarios, and collectively drive progress and practical implementation of AI technologies across various domains.
+⚠️ This project is for academic and non-commercial use only. Commercial use is strictly prohibited.
+
+We take no legal responsibility for any use of the models or datasets. Users should independently assess potential risks and verify model outputs.
+
+The original news content is copyrighted by Securities Times. We only provide derived data (e.g., timestamps, sentiment scores, embeddings), excluding any raw or verbatim text.
+
+Users are encouraged to explore and expand upon this work to support research and AI innovation.
 
 ## Licenses
 ![](https://img.shields.io/badge/License-MIT-blue.svg#id=wZ1Hr&originHeight=20&originWidth=82&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
-⚠️ This project adheres to [MIT License](https://lbesson.mit-license.org/).
+This project adheres to [MIT License](https://lbesson.mit-license.org/).
 
 ![](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg#id=ZNe2m&originHeight=20&originWidth=158&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
-⚠️ The CSMD dataset follows [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+The CSMD dataset follows [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
