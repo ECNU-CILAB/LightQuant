@@ -1,4 +1,4 @@
-# [CSMD: Large Language Model-Enhanced Multimodal Dataset for Chinese Stock Market Prediction](https://arxiv.org/)
+# [CSMD: Curated Multimodal Dataset for Chinese Stock Analysis](https://arxiv.org/)
 
 ## 📝 CSMD version 1.0:  — Chinese Stock Multimodal Dataset
 CSMD, a novel multimodal dataset for the Chinese stock market that encompasses stock prices and financial news texts, which is publicly available for research use. It includes mainly five advantages:
@@ -15,7 +15,7 @@ In summary, CSMD is dedicated to providing high-quality multimodal data and flex
 
 Currently, the CSMD V1.0 dataset including CSMD50 and CSMD300 is available to the public, with plans to continuously update and refine datasets in the future.
 
-## 📝 LightQuant version 1.0:  — Lightweight Quantitative Framework for Stock Market Prediction
+## 💡 LightQuant version 1.0:  — Lightweight Quantitative Framework for Stock Market Prediction
 LightQuant is a lightweight quantitative framework for stock market prediction. It is designed to provide a flexible, modular framework supports multimodal data analysis, model training, and strategy backtesting, meeting diverse research requirements. With its modular design and flexible data processing capabilities, LightQuant aims to simplify the process of building and testing stock market prediction models.
 
 🤗 We hope to provide a comprehensive, convenient, one-stop evaluation solution for the entire industry.
@@ -23,7 +23,7 @@ LightQuant is a lightweight quantitative framework for stock market prediction. 
 ## 🚀 Changelog
 - **[2024.06.16]** CSMD has now open-sourced part of the datasets and the complete data processing flow and code! We hope to open source the complete dataset and more detailed code after the paper is accepted. [Download dataset here](./dataset) 🚀🚀🚀
 
-## 📝 Table of Contents
+## ✨ Table of Contents
 - [Data](#data)
 - [Quick Start](#quick-start)
 - [Leaderboard](#leaderboard)
@@ -31,13 +31,13 @@ LightQuant is a lightweight quantitative framework for stock market prediction. 
 - [Disclaimer](#disclaimer)
 - [Licenses](#licenses)
 
-## 💡 Data
+## Data
 Our dataset collected data from trusted, authoritative sources, primarily including official Chinese financial media such as Securities Times, ensuring high authenticity and relevance. The dataset features rich multimodal information—combining stock prices and financial news texts—to support comprehensive research and modeling. We implement rigorous preprocessing steps, including data cleaning, denoising, and feature extraction, to enhance data quality and usability. Additionally, we leverage large language models (LLMs) like GPT-4 to extract impactful financial factors from news texts, significantly improving interpretability and aiding downstream tasks. This integrated approach ensures our dataset not only captures real-market dynamics but also supports robust, explainable financial analysis.
 
 Here we show the process of how LLM extracts financial factors from news texts:
 ![LLM.jpg](./pictures/LLM.jpg)
 
-## 💡 Quick Start
+## Quick Start
 ![framework.jpg](./pictures/framework.jpg)
 To get started with CSMD, follow these steps:
 1. **Installation**: Install the necessary dependencies by running the following command:
@@ -73,7 +73,7 @@ Then we can start to use our framework:
 4. bash run_backtest.sh # you can configurate the parameters in run_backtest.sh to backtest the model
 ```
 
-## ✨ Leaderboard
+## Leaderboard
 Below, we list the performance of the models we evaluated in the initial version. We have conducted a comprehensive assessment of various models on CSMD50 and CSMD300.
 
 ### Performance comparison on the benchmark dataset.
@@ -103,23 +103,23 @@ Below, we list the performance of the models we evaluated in the initial version
 | PEN       | 0.1004 | 0.0271  | 0.0351 | 1.6830 | 0.5337 |
 
 
-## 🔥 TODO
+## TODO
 - [x] Release the complete dataset;
 - [x] Add more prediction models;
 - [x] Optimize the backtesting strategy;
 - [x] Refine the details of our framework;
 
-## ⚠️ Disclaimer
-We assume no legal liability for the use of the open-source model and datasets. Users are responsible for independently assessing and assuming any potential risks associated with using the framework or data, and should always exercise caution.
+## Disclaimer
+⚠️ We assume no legal liability for the use of the open-source model and datasets. Users are responsible for independently assessing and assuming any potential risks associated with using the framework or data, and should always exercise caution.
 We recommend that users independently verify and analyze the model's outputs, and make informed decisions based on their specific needs and real-world scenarios.
 By providing open-source data and models, we aim to offer valuable tools for academic research and industry applications, promoting advancements in artificial intelligence technology within data analysis, financial innovation, and other related fields.
-The use of our open-source model and dataset for commercial purposes is prohibited. The copyright of the original news content belongs to Securities Times. We only release processed and derived data, such as timestamps, sentiment scores, and embeddings, without including any raw or verbatim news text.
+⚠️ The use of our open-source model and dataset for commercial purposes is prohibited. The copyright of the original news content belongs to Securities Times. We only release processed and derived data, such as timestamps, sentiment scores, and embeddings, without including any raw or verbatim news text.
 We encourage users to fully leverage their creativity, deeply explore the potential of our work, expand its application scenarios, and collectively drive progress and practical implementation of AI technologies across various domains.
 
-## ⚠️ Licenses
+## Licenses
 ![](https://img.shields.io/badge/License-MIT-blue.svg#id=wZ1Hr&originHeight=20&originWidth=82&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
-This project adheres to [MIT License](https://lbesson.mit-license.org/).
+⚠️ This project adheres to [MIT License](https://lbesson.mit-license.org/).
 
 ![](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg#id=ZNe2m&originHeight=20&originWidth=158&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
-The CSMD dataset follows [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+⚠️ The CSMD dataset follows [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
