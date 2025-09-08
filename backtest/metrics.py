@@ -67,6 +67,7 @@ def calculate_SR(asset_list, risk_free_rate=0.01):
 
     if annualized_volatility == 0:
         return np.nan
+
     sharpe_ratio = excess_return / annualized_volatility
 
     return sharpe_ratio

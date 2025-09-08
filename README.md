@@ -22,6 +22,8 @@ LightQuant is a lightweight quantitative framework for stock market prediction. 
 
 ## 🚀 Changelog
 - **[2025.06.16]** CSMD has now open-sourced part of the datasets and the complete data processing flow and code! We hope to open source the complete dataset and more detailed code after the paper is accepted. [Download dataset here](./dataset) 🚀🚀🚀
+- **[2025.08.05]** Congratulations!🎉🎉🎉 We are delighted to announce that our paper has been accepted by 34th ACM International Conference on Information and Knowledge Management(CIKM2025).
+- **[2025.09.08]** We open source the complete curated multimodal dataset CSMD50 and CSMD300, hope our work can really help you. [Download CSMD50 here](https://drive.google.com/file/d/1vDQOQMERyjvn6Mqc6zApPx8C0al-oIj1/view?usp=sharing) [Download CSMD300 here](https://drive.google.com/file/d/1eNFkqytEwloVoKRRpwZYEI8K5BSaZSW8/view?usp=sharing) 
 
 ## ✨ Table of Contents
 - [Data](#data)

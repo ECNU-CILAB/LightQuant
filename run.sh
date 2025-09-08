@@ -3,13 +3,13 @@ python -u run.py \
   --use_news False \
   --model 'lstm' \
   --epochs 300 \
+  --lr 2e-6 \
   --epsilon 0.1 \
   --perturbation_size 0.1 \
   --layers 2 \
   --input_size 5 \
   --hidden_size 128 \
   --attention_size 128 \
-  --lr 2e-6 \
   --weight_decay 1e-4 \
   --look_back_window 5 \
   --batch_size 64 \
