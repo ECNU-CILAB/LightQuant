@@ -70,12 +70,13 @@ def backtest_normal(dataloader, model, device):
     MDD = calculate_MDD(asset_list)
     CR = calculate_Calmar_Ratio(ARR, MDD)
     IR = calculate_IR(asset_list)
+    Cumulative_Return = calculate_cumulative_return(asset_list)
 
 
-    return ACC, ARR, SR, MDD, CR, IR
+    return ACC, ARR, SR, MDD, CR, IR, Cumulative_Return
 
 def backtest_dtml(dataloader, model, device, n_stocks):
-    ACC_List, ARR_List, SR_List, MDD_List, CR_List, IR_List = [], [], [], [], [], []
+    ACC_List, ARR_List, SR_List, MDD_List, CR_List, IR_List, Cumulative_Return_List = [], [], [], [], [], [], []
 
     for i in range(n_stocks):
         money, stock = 10000, 0
@@ -131,6 +132,7 @@ def backtest_dtml(dataloader, model, device, n_stocks):
         MDD = calculate_MDD(asset_list)
         CR = calculate_Calmar_Ratio(ARR, MDD)
         IR = calculate_IR(asset_list)
+        cumulative_Return = calculate_cumulative_return(asset_list)
 
         ACC_List.append(ACC)
         ARR_List.append(ARR)
@@ -138,8 +140,9 @@ def backtest_dtml(dataloader, model, device, n_stocks):
         MDD_List.append(MDD)
         CR_List.append(CR)
         IR_List.append(IR)
+        Cumulative_Return_List.append(cumulative_Return)
 
-    return ACC_List, ARR_List, SR_List, MDD_List, CR_List, IR_List
+    return ACC_List, ARR_List, SR_List, MDD_List, CR_List, IR_List, Cumulative_Return_List
 
 def backtest_scinet(dataloader, model, device):
 
@@ -192,8 +195,9 @@ def backtest_scinet(dataloader, model, device):
     MDD = calculate_MDD(asset_list)
     CR = calculate_Calmar_Ratio(ARR, MDD)
     IR = calculate_IR(asset_list)
+    Cumulative_Return = calculate_cumulative_return(asset_list)
 
-    return ACC, ARR, SR, MDD, CR, IR
+    return ACC, ARR, SR, MDD, CR, IR, Cumulative_Return
 
 
 def backtest_single(args):
@@ -230,7 +234,7 @@ def backtest_single(args):
 
     model.eval()
 
-    ACC_List, ARR_List, SR_List, MDD_List, CR_List, IR_List = [], [], [], [], [], []
+    ACC_List, ARR_List, SR_List, MDD_List, CR_List, IR_List, Cumulative_Return_List = [], [], [], [], [], [], []
 
     if args.model == "lstm" or args.model == "bi_lstm" or args.model == "alstm" or args.model == "adv_lstm":
         for file in tqdm(os.listdir(args.test_price_folder)):
@@ -241,7 +245,7 @@ def backtest_single(args):
 
             backtest_dataloader = create_dataloader(backtest_dataset, batch_size=args.batch_size, shuffle=True, drop_last=False)
 
-            ACC, ARR, SR, MDD, CR, IR = backtest_normal(backtest_dataloader, model, device)
+            ACC, ARR, SR, MDD, CR, IR, Cumulative_Return = backtest_normal(backtest_dataloader, model, device)
 
             ACC_List.append(ACC)
             ARR_List.append(ARR)
@@ -249,6 +253,7 @@ def backtest_single(args):
             MDD_List.append(MDD)
             CR_List.append(CR)
             IR_List.append(IR)
+            Cumulative_Return_List.append(Cumulative_Return)
 
     elif args.model == "dtml":
         backtest_dataset = DTML_Dataset(
@@ -258,7 +263,7 @@ def backtest_single(args):
         )
         backtest_dataloader = create_dataloader(backtest_dataset, batch_size=1, shuffle=False, drop_last=False)
 
-        ACC_List, ARR_List, SR_List, MDD_List, CR_List, IR_List = backtest_dtml(backtest_dataloader, model, device, n_stocks=args.n_stocks)
+        ACC_List, ARR_List, SR_List, MDD_List, CR_List, IR_List, Cumulative_Return_List = backtest_dtml(backtest_dataloader, model, device, n_stocks=args.n_stocks)
 
     elif args.model == "scinet":
         for file in tqdm(os.listdir(args.test_price_folder)):
@@ -268,7 +273,7 @@ def backtest_single(args):
             backtest_dataset = Backtest_SCINet_Dataset(file_path, args.seq_len, args.pred_len)
             backtest_dataloader = create_dataloader(backtest_dataset, batch_size=1, shuffle=False, drop_last=False)
 
-            ACC, ARR, SR, MDD, CR, IR = backtest_scinet(backtest_dataloader, model, device)
+            ACC, ARR, SR, MDD, CR, IR, Cumulative_Return = backtest_scinet(backtest_dataloader, model, device)
 
             ACC_List.append(ACC)
             ARR_List.append(ARR)
@@ -292,6 +297,21 @@ def backtest_single(args):
         file.write(f"mean MDD: {calculate_mean_without_nan(MDD_List)}\n")
         file.write(f"mean CR: {calculate_mean_without_nan(CR_List)}\n")
         file.write(f"mean IR: {calculate_mean_without_nan(IR_List)}")
+
+    if Cumulative_Return_List:
+        max_days = max(len(cumulative_return) for cumulative_return in Cumulative_Return_List)
+        average_cumulative_returns = []
+        for day in range(max_days):
+            daily_values = []
+            for cumulative_return in Cumulative_Return_List:
+                if day < len(cumulative_return):
+                    daily_values.append(cumulative_return[day])
+            if daily_values:
+                average_cumulative_returns.append(sum(daily_values) / len(daily_values))
+            else:
+                average_cumulative_returns.append(float('nan'))
+        data = pd.DataFrame(average_cumulative_returns)
+        data.to_csv(f'{args.backtest_result_save_folder}/{args.model}_cumulative_return.csv', index=False)
 
 
 

@@ -16,14 +16,14 @@ if __name__ == "__main__":
     parser.add_argument('--dataset', default="CSMD50", type=str)
     parser.add_argument('--test_price_folder', default=os.path.join(project_root, 'dataset', parser.get_default('dataset'), 'test', 'price'), type=str)
     parser.add_argument('--test_news_folder', default=os.path.join(project_root, 'dataset', parser.get_default('dataset'), 'test', 'news_embedding'), type=str)
-    parser.add_argument('--use_news', default=True, type=bool, help='use news or not')
-    parser.add_argument('--model', default="StockNet" ,type=str)  # lstm, alstm, bi_lstm, adv_lstm, dtml, scinet, StockNet, HAN
+    parser.add_argument('--use_news', default=False, type=bool, help='use news or not')
+    parser.add_argument('--model', default="alstm" ,type=str)  # lstm, alstm, bi_lstm, adv_lstm, dtml, scinet, StockNet, HAN
     parser.add_argument('--layers', default=2, type=int)
     parser.add_argument('--input_size', default=5, type=int)
     parser.add_argument('--hidden_size', default=128, type=int)
     parser.add_argument('--attention_size', default=128, type=int)
     parser.add_argument('--look_back_window', default=7, type=int)
-    parser.add_argument('--batch_size', default=1, type=int)
+    parser.add_argument('--batch_size', default=0, type=int)
     parser.add_argument('--useGPU', default=True, type=bool)
     parser.add_argument('--GPU_ID', default=1, type=int)
     parser.add_argument('--batch_first', default=True, type=bool)

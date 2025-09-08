@@ -64,7 +64,7 @@ if __name__ == '__main__':
     parser.add_argument('--seq_len', default=32, type=int, help='input sequence length for SCINet')
     parser.add_argument('--pred_len', default=5, type=int, help='prediction length for SCINet')
     parser.add_argument('--history_output', default='./result/{}/history_output/'.format(parser.get_default('dataset')), help='storage history outputs for StockNet')
-    parser.add_argument('--pretrained_model', type=str, default='yiyanghkust/finbert-pretrain', help='pretrained financial model for HAN')
+    parser.add_argument('--pretrained_model', type=str, default='yiyanghkust/finbert-pretrain', help='pretrained financial model for PEN')
     parser.add_argument('--train_start_date', type=str, default='2021-01-01', help='train start date for HAN dataset')
     parser.add_argument('--train_end_date', type=str, default='2024-03-14', help='train end date for HAN dataset')
     parser.add_argument('--dev_start_date', type=str, default='2024-03-15', help='dev start date for HAN dataset')
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     parser.add_argument('--test_start_date', type=str, default='2024-08-08', help='test start date for HAN dataset')
     parser.add_argument('--test_end_date', type=str, default='2024-12-31', help='test end date for HAN dataset')
     parser.add_argument('--max_num_tweets_len', type=int, default=20, help='max number of tweets for HAN')
-    parser.add_argument('--max_num_tokens_len', type=int, default=30, help='max number of tokens for HAN')
+    parser.add_argument('--max_num_tokens_len', type=int, default=30, help='max number of t okens for HAN')
     parser.add_argument('--days', type=int, default=5, help='days for HAN')
     parser.add_argument('--bert_dim', type=int, default= 768, help='bert dim for HAN')
 

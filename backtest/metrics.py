@@ -71,3 +71,19 @@ def calculate_SR(asset_list, risk_free_rate=0.01):
     sharpe_ratio = excess_return / annualized_volatility
 
     return sharpe_ratio
+
+
+def calculate_cumulative_return(asset_list):
+
+    if not asset_list or len(asset_list) < 2:
+        print(f"[Warning] Asset list length:{len(asset_list)}")
+        return []
+
+    initial = asset_list[0]
+    cumulative_returns = []
+
+    for i in range(len(asset_list)):
+        cumulative_return = (asset_list[i] / initial) - 1
+        cumulative_returns.append(cumulative_return)
+
+    return cumulative_returns
