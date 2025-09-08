@@ -106,7 +106,7 @@ Below, we list the performance of the models we evaluated in the initial version
 
 
 ## TODO
-- [x] Release the complete dataset;
+- [√] Release the complete dataset;
 - [x] Add more prediction models;
 - [x] Optimize the backtesting strategy;
 - [x] Refine the details of our framework;
